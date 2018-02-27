@@ -1,12 +1,16 @@
 import Cookies from 'js-cookie';
+import * as AppConst from '../../constants/appConst';
 
 const user = {
     state: {},
     mutations: {
         logout (state, vm) {
-            Cookies.remove('user');
-            Cookies.remove('password');
-            Cookies.remove('access');
+            Cookies.remove(AppConst.ACCOUNT_ID);
+            Cookies.remove(AppConst.ACCOUNT_MAIL);
+            Cookies.remove(AppConst.ACCOUNT_NAME);
+            Cookies.remove(AppConst.ACCOUNT_PHONE);
+            Cookies.remove(AppConst.ACCOUNT_ROLE);
+            Cookies.remove(AppConst.ROUTE_PERMISSION);
             // 恢复默认样式
             let themeLink = document.querySelector('link[name="theme"]');
             themeLink.setAttribute('href', '');

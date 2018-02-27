@@ -1,6 +1,7 @@
 import {otherRouter, appRouter} from '@/router/router';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
+import * as AppConst from '../../constants/appConst';
 import Vue from 'vue';
 
 const app = {
@@ -38,7 +39,7 @@ const app = {
             state.tagsList.push(...list);
         },
         updateMenulist (state) {
-            let accessCode = parseInt(Cookies.get('access'));
+            let accessCode = parseInt(Cookies.get(AppConst.ROUTE_PERMISSION));
             let menuList = [];
             appRouter.forEach((item, index) => {
                 if (item.access !== undefined) {

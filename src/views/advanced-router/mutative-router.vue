@@ -29,16 +29,16 @@ export default {
                 {
                     type: 'index',
                     title: '序号',
-                    width: 60
+                    width: 60,
                 },
                 {
                     title: '订单号',
                     key: 'order_id',
-                    align: 'center'
+                    align: 'center',
                 },
                 {
                     title: '用户',
-                    key: 'user_name'
+                    key: 'user_name',
                 },
                 {
                     title: '详情',
@@ -48,45 +48,45 @@ export default {
                         return h('Button', {
                             props: {
                                 type: 'text',
-                                size: 'small'
+                                size: 'small',
                             },
                             on: {
                                 click: () => {
                                     let argu = { order_id: params.row.order_id };
                                     this.$router.push({
                                         name: 'order-info',
-                                        params: argu
+                                        params: argu,
                                     });
-                                }
-                            }
+                                },
+                            },
                         }, '了解详情');
-                    }
-                }
+                    },
+                },
             ],
             orderData: [
                 {
                     order_id: '1000001',
-                    user_name: 'Aresn'
+                    user_name: 'Aresn',
                 },
                 {
                     order_id: '1000002',
-                    user_name: 'Lison'
+                    user_name: 'Lison',
                 },
                 {
                     order_id: '1000003',
-                    user_name: 'lili'
+                    user_name: 'lili',
                 },
                 {
                     order_id: '1000004',
-                    user_name: 'lala'
-                }
-            ]
+                    user_name: 'lala',
+                },
+            ],
         };
     },
     computed: {
         avatorImage () {
             return localStorage.avatorImgPath;
-        }
-    }
+        },
+    },
 };
 </script>

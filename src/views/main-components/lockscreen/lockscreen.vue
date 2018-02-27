@@ -8,6 +8,8 @@
 
 <script>
 import Cookies from 'js-cookie';
+import * as AppConst from '../../../constants/appConst';
+
 const setLockBackSize = () => {
     let x = document.body.clientWidth;
     let y = document.body.clientHeight;
@@ -19,8 +21,8 @@ export default {
     props: {
         value: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     methods: {
         lockScreen () {
@@ -33,11 +35,11 @@ export default {
             setTimeout(() => {
                 lockScreenBack.style.transition = 'all 0s';
                 this.$router.push({
-                    name: 'locking'
+                    name: 'locking',
                 });
             }, 800);
-            Cookies.set('locking', '1');
-        }
+            Cookies.set(AppConst.SCREEN_LOCKING, '1');
+        },
     },
     mounted () {
         let lockScreenBack;
@@ -60,7 +62,7 @@ export default {
         this.lockScreenSize = size;
         lockScreenBack.style.transition = 'all 3s';
         lockScreenBack.style.width = lockScreenBack.style.height = size + 'px';
-    }
+    },
 };
 </script>
 
