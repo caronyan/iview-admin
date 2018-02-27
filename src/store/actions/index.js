@@ -9,14 +9,19 @@ import userGroupMeta from './userGroup';
 const _generateApiFunction = meta => {
     // 返回一个接受commit和载荷的函数
     return ({ commit }, params) => {
+        let isHttpGet = meta.httpMethod === AppConst.HTTP.GET;
+        let isHttpPost = meta.httpMethod === AppConst.HTTP.POST;
         let fetchParams = {
             method: meta.httpMethod,
-            body: !!params ? utils.getPostParams(params) : '',
+            body: (!!params && isHttpPost) ? utils.getPostParams(params) : '',
             headers: AccInfoUtil.getAuthHeader(meta.httpMethod),
         };
-        // 如果是get方法移除body参数
-        if (meta.httpMethod === AppConst.HTTP.GET) delete fetchParams.body;
-        return utils.fetchWithTimeout(meta.url + utils.getUrlParams(params), fetchParams);
+        // 如果是get方法移除body参数，并添加query string参数
+        if (isHttpGet) {
+            delete fetchParams.body;
+            meta.url += utils.getUrlParams(params);
+        }
+        return utils.fetchWithTimeout(meta.url, fetchParams);
     };
 };
 

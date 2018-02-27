@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import md5 from 'js-md5';
 import * as AppConst from '../constants/appConst';
 
 let accFuncSet = {
@@ -49,7 +50,7 @@ let accFuncSet = {
                 }
             })(),
             'ck': this.getClientKey(),
-            'id': Cookies.get(AppConst.ACCOUNT_ID),
+            'id': Cookies.get(AppConst.ACCOUNT_ID) || 0,
         };
     },
 
@@ -57,6 +58,15 @@ let accFuncSet = {
     // 可以使用密钥/token，取决于后端实现方案
     getClientKey: () => {
         return 'sample_key';
+    },
+
+    // 生成传输密码串，取决于加密实现
+    generateLocalPwd: (usr, pwd) => {
+        return md5(usr + pwd);
+    },
+
+    setRouterPermission: (permission) => {
+        Cookies.set(AppConst.ROUTE_PERMISSION, permission);
     },
 };
 

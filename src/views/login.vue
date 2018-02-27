@@ -38,44 +38,54 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
-export default {
-    data () {
-        return {
-            form: {
-                userName: 'iview_admin',
-                password: ''
-            },
-            rules: {
-                userName: [
-                    { required: true, message: '账号不能为空', trigger: 'blur' }
-                ],
-                password: [
-                    { required: true, message: '密码不能为空', trigger: 'blur' }
-                ]
-            }
-        };
-    },
-    methods: {
-        handleSubmit () {
-            this.$refs.loginForm.validate((valid) => {
-                if (valid) {
-                    Cookies.set('user', this.form.userName);
-                    Cookies.set('password', this.form.password);
-                    this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                    if (this.form.userName === 'iview_admin') {
-                        Cookies.set('access', 0);
-                    } else {
-                        Cookies.set('access', 1);
+    import AccInfoUtil from '../utils/accInfoUtils';
+    import { mapActions } from 'vuex';
+
+    export default {
+        data () {
+            return {
+                form: {
+                    userName: 'iview_admin',
+                    password: '',
+                },
+                rules: {
+                    userName: [
+                        { required: true, message: '账号不能为空', trigger: 'blur' },
+                    ],
+                    password: [
+                        { required: true, message: '密码不能为空', trigger: 'blur' },
+                    ],
+                },
+            };
+        },
+        methods: {
+            ...mapActions(['login']),
+            handleSubmit () {
+                this.$refs.loginForm.validate((valid) => {
+                    if (valid) {
+                        this.login({
+                            userName: this.form.userName,
+                            pwd: AccInfoUtil.generateLocalPwd(this.form.userName, this.form.password),
+                        }).then(res => {
+                            if (res.status === 'ok') {
+                                this.$Message.success('登录成功，正在跳转...');
+                                let accInfo = res.data;
+                                AccInfoUtil.setAccountInfo(accInfo);
+                                // 设置路由信息
+                                AccInfoUtil.setRouterPermission(accInfo.permission);
+                                this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
+                                this.$router.push({
+                                    name: 'home_index',
+                                });
+                            } else {
+                                this.$Message.error('登录出了一点问题... ' + res.msg);
+                            }
+                        });
                     }
-                    this.$router.push({
-                        name: 'home_index'
-                    });
-                }
-            });
-        }
-    }
-};
+                });
+            },
+        },
+    };
 </script>
 
 <style>
